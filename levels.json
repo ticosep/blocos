@@ -1,0 +1,20 @@
+{
+    "levels":[
+        {
+            "name": "Growing",
+            "initial" : {
+                "size" : "1",
+                "color" : [255,0,0,1]
+            },
+            "final" : {
+                "size" : "2",
+                "color" : [0,0,255,1]
+            },
+            "modifiers": {
+                "colorize" : [0,0,255,1]
+            }
+
+            }
+                  
+    ]
+}
