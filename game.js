@@ -3,6 +3,7 @@ document.body.appendChild(tela.view);
 
 
 
+//exemplo fucnional --- melhorar para possivel js file
 
 function loadJSON(callback) {
 
@@ -25,7 +26,6 @@ function loadJSON(callback) {
 loadJSON(function(response) {
     
  var level = JSON.parse(response);
- alert(level.name);
+ alert(level.levels[1].name);
 });
-
 
