@@ -1,18 +1,13 @@
-
-
-function loadJSON(callback) {
-
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'levels.json', true);
-    xobj.onreadystatechange = function() {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-
-            // .open will NOT return a value but simply returns undefined in async mode so use a callback
-            callback(xobj.responseText);
-
+var lvls = (function() {
+    var lvls= null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': "/levels.json",
+        'dataType': "json",
+        'success': function (data) {
+            lvls = data;
         }
-    }
-    xobj.send(null);
-
-}
+    });
+    return lvls;
+})();
