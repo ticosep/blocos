@@ -1,8 +1,7 @@
-var levelAtual;
-var tela;
-var trilho;
+var levelAtual, tela, trilho,bloco1,bloco2;
+
 geraTela();
-geraBlocos(1);
+geraBlocos(0);
 
 
 function carregaLevelAtual(atual){
@@ -26,9 +25,9 @@ function geraTela(){
 }
 
 function geraBlocos(atual){
-    //gera e posiciona blocos do jogo
-    var bloco1 = new PIXI.Graphics();
-    var bloco2 = new PIXI.Graphics();
+    //gera e posiciona blocos do jogo de acordo com a janela do navegador
+    bloco1 = new PIXI.Graphics();
+    bloco2 = new PIXI.Graphics();
 
     if (lvls.levels[atual].initial[0] == 1){
         bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
@@ -38,8 +37,21 @@ function geraBlocos(atual){
     }
     else {
         bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
-        bloco1.drawRect(0,window.innerHeight/2 - window.innerHeight/6, window.innerHeight/6, window.innerHeight/4);
+        bloco1.drawRect(0,window.innerHeight/2 - (window.innerHeight/4)/2, window.innerHeight/6, window.innerHeight/4);
         bloco1.endFill();
         tela.stage.addChild(bloco1);
     }
+    if (lvls.levels[atual].final[0] == 1){
+        bloco2.beginFill(parseInt(lvls.levels[atual].final[1],16));
+        bloco2.drawRect(window.innerWidth - window.innerHeight/6 ,window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
+        bloco2.endFill();
+        tela.stage.addChild(bloco2);
+    }
+    else {
+        bloco2.beginFill(parseInt(lvls.levels[atual].final[1],16));
+        bloco2.drawRect(window.innerWidth - window.innerHeight/6  ,window.innerHeight/2 - (window.innerHeight/4)/2, window.innerHeight/6, window.innerHeight/4);
+        bloco2.endFill();
+        tela.stage.addChild(bloco2);
+    }
 }
+
