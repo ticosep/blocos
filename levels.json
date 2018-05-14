@@ -1,11 +1,11 @@
 
 {
         "levels": [
-            {"name": "Growing","initial": ["1",  "255,0,0"],"final":["2","255,0,0"],"modifiers":[false,true,false]},
-            {"name": "Let it blue","initial": [ "1", "255,0,0"],"final":[ "1", "0,0,255"],"modifiers":[true,false,false]},
-            {"name": "Pulsating","initial": [ "2", "255,0,0"],"final":[ "2","255,0,0"],"modifiers":[false,true,false]}, 
-            {"name": "Mix and Match","initial": ["2", "255,0,0"],"final":[ "1", "0,0,255"],"modifiers":[true,true,false]}, 
-            {"name": "Time to Choose","initial": [ "1", "255,0,0"],"final":["1", "255,0,0"],"modifiers":[true,true,true]} 
+            {"name": "Growing","initial": ["1",  "ff0000"],"final":["2","ff0000"],"modifiers":[false,true,false]},
+            {"name": "Let it blue","initial": [ "1", "ff0000"],"final":[ "1", "0000ff "],"modifiers":[true,false,false]},
+            {"name": "Pulsating","initial": [ "2", "ff0000"],"final":[ "2","ff0000"],"modifiers":[false,true,false]}, 
+            {"name": "Mix and Match","initial": ["2", "ff0000"],"final":[ "1", "0000ff "],"modifiers":[true,true,false]}, 
+            {"name": "Time to Choose","initial": [ "1", "ff0000"],"final":["1", "ff0000"],"modifiers":[true,true,true]} 
         ]
  
 }
