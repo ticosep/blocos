@@ -1,12 +1,16 @@
-var levelAtual, tela, trilho,bloco1,bloco2;
+var tela, trilho,bloco1,bloco2;
+var modif = [];
 
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-geraTela();
-geraBlocos(0);
+carregaLevelAtual(3);
 
 
 function carregaLevelAtual(atual){
 
+    geraTela();
+    geraBlocos(atual);
+    criaMod(lvls.levels[atual].modifiers.length);
+    
+    
 }
 
 function geraTela(){
@@ -30,6 +34,8 @@ function geraBlocos(atual){
     bloco1 = new PIXI.Graphics();
     bloco2 = new PIXI.Graphics();
 
+   
+    
     if (lvls.levels[atual].initial[0] == 1){
         bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
         bloco1.drawRect(0,window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
@@ -64,9 +70,56 @@ function geraBlocos(atual){
 }
 
 
-
 function iniciaCaminho(){
-    //faz o elemento passado andar ate o fim do campo de jogo
+    //faz o bloco1 andar ate o fim do campo de jogo
     TweenMax.to(bloco1, 10, {x: window.innerWidth});
+    carregaLevelAtual(0);
+ }
 
+ function criaMod(quant){
+    
+    //cria os modificadores conforme a quantidade existente no json
+    //conforme o numero de modficadores existente, os mesmos sao posicionados de maneira correta no campo
+    // ja que o campo tem tamanho dinamico
+    if(quant == 2){
+        var mod1 = new PIXI.Graphics();
+        var mod2 = new PIXI.Graphics();
+        mod1.beginFill(0xff0);
+        mod1.drawRect(window.innerWidth/2 + window.innerHeight/6, window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
+        mod1.endFill();
+        mod2.beginFill(0xff0);
+        mod2.drawRect(window.innerWidth/2 - window.innerHeight/6, window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
+        mod2.endFill();
+        tela.stage.addChild(mod1);
+        tela.stage.addChild(mod2);
+       }
+    else{
+        var mod1 = new PIXI.Graphics();
+        mod1.beginFill(0xff0);
+        mod1.drawRect(window.innerWidth/2 - window.innerHeight/6, window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
+        mod1.endFill();
+        tela.stage.addChild(mod1);
+    }
+    for(i = 0; i< quant; i++){
+
+        modif[i] =  lvls.levels[atual].modifiers[i]; 
+        
+    }
+   
+    
+ }
+
+
+ function metodoMod(type){
+    
+    
+    if (type == "colorize"){
+
+    }
+    else if(type == "resize"){
+
+    }
+    else{
+
+    }
  }
