@@ -1,5 +1,6 @@
 var levelAtual, tela, trilho,bloco1,bloco2;
 
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 geraTela();
 geraBlocos(0);
 
@@ -33,14 +34,19 @@ function geraBlocos(atual){
         bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
         bloco1.drawRect(0,window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
         bloco1.endFill();
-        fazInterativo(bloco1,andarAteFim(bloco1));
+        //deixa bloco interativo
+        bloco1.interactive = true;
+        bloco1.buttonMode = true;
+        bloco1.on('click',iniciaCaminho);
         tela.stage.addChild(bloco1);
     }
     else {
         bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
         bloco1.drawRect(0,window.innerHeight/2 - (window.innerHeight/4)/2, window.innerHeight/6, window.innerHeight/4);
         bloco1.endFill();
-        fazInterativo(bloco1,andarAteFim(bloco1));
+        bloco1.interactive = true;
+        bloco1.buttonMode = true;
+        bloco1.on('click',iniciaCaminho);
         tela.stage.addChild(bloco1);
     }
     if (lvls.levels[atual].final[0] == 1){
@@ -57,15 +63,10 @@ function geraBlocos(atual){
     }
 }
 
-function fazInterativo(obj,funcao){
-    //faz o elemento passado tronar-se interativo e define a função q sera executada apos interacao
-    obj.interactive = true;
-    obj.buttonMode = true;
-    obj.on('click',funcao);
-}
 
-function andarAteFim(obj,event){
+
+function iniciaCaminho(){
     //faz o elemento passado andar ate o fim do campo de jogo
-    obj.x *= 1.25;
+    TweenMax.to(bloco1, 10, {x: window.innerWidth});
 
  }
