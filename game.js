@@ -1,14 +1,45 @@
-var tela, trilho,bloco1,bloco2;
+var levelAtual = 0;
+var tela, trilho, bloco1, bloco2;
 var modif = [];
 
-carregaLevelAtual(3);
 
+colisao = new Bump(PIXI);
 
-function carregaLevelAtual(atual){
+setup();
+
+function setup() {
+    
+    carregaLevelAtual(levelAtual);
+    state = play;
+    tela.ticker.add(delta => gameLoop(delta));
+    
+  }
+  
+function gameLoop(delta){
+  //Update the current game state:
+  alert(bloco1);
+  state(delta);
+}
+function play(delta) {
+  
+  if (colisao.hit(bloco1,bloco2)) {
+
+    alert('a');
+    
+
+  } else {
+
+   
+    console.log("N hit!");
+    
+  }
+}
+
+function carregaLevelAtual(levelAtual){
 
     geraTela();
-    geraBlocos(atual);
-    criaMod(lvls.levels[atual].modifiers.length);
+    geraBlocos(levelAtual);
+    criaMod(lvls.levels[levelAtual].modifiers.length);
     
     
 }
@@ -29,15 +60,15 @@ function geraTela(){
     tela.stage.addChild(trilho);
 }
 
-function geraBlocos(atual){
+function geraBlocos(levelAtual){
     //gera e posiciona blocos do jogo de acordo com a janela do navegador
-    bloco1 = new PIXI.Graphics();
+   bloco1 = new PIXI.Graphics();
     bloco2 = new PIXI.Graphics();
 
    
     
-    if (lvls.levels[atual].initial[0] == 1){
-        bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
+    if (lvls.levels[levelAtual].initial[0] == 1){
+        bloco1.beginFill(parseInt(lvls.levels[levelAtual].initial[1],16));
         bloco1.drawRect(0,window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
         bloco1.endFill();
         //deixa bloco interativo
@@ -47,7 +78,7 @@ function geraBlocos(atual){
         tela.stage.addChild(bloco1);
     }
     else {
-        bloco1.beginFill(parseInt(lvls.levels[atual].initial[1],16));
+        bloco1.beginFill(parseInt(lvls.levels[levelAtual].initial[1],16));
         bloco1.drawRect(0,window.innerHeight/2 - (window.innerHeight/4)/2, window.innerHeight/6, window.innerHeight/4);
         bloco1.endFill();
         bloco1.interactive = true;
@@ -55,14 +86,14 @@ function geraBlocos(atual){
         bloco1.on('click',iniciaCaminho);
         tela.stage.addChild(bloco1);
     }
-    if (lvls.levels[atual].final[0] == 1){
-        bloco2.beginFill(parseInt(lvls.levels[atual].final[1],16));
+    if (lvls.levels[levelAtual].final[0] == 1){
+        bloco2.beginFill(parseInt(lvls.levels[levelAtual].final[1],16));
         bloco2.drawRect(window.innerWidth - window.innerHeight/6 ,window.innerHeight/2 - (window.innerHeight/6)/2, window.innerHeight/6, window.innerHeight/6);
         bloco2.endFill();
         tela.stage.addChild(bloco2);
     }
     else {
-        bloco2.beginFill(parseInt(lvls.levels[atual].final[1],16));
+        bloco2.beginFill(parseInt(lvls.levels[levelAtual].final[1],16));
         bloco2.drawRect(window.innerWidth - window.innerHeight/6  ,window.innerHeight/2 - (window.innerHeight/4)/2, window.innerHeight/6, window.innerHeight/4);
         bloco2.endFill();
         tela.stage.addChild(bloco2);
@@ -73,7 +104,7 @@ function geraBlocos(atual){
 function iniciaCaminho(){
     //faz o bloco1 andar ate o fim do campo de jogo
     TweenMax.to(bloco1, 10, {x: window.innerWidth});
-    carregaLevelAtual(0);
+  
  }
 
  function criaMod(quant){
@@ -102,7 +133,7 @@ function iniciaCaminho(){
     }
     for(i = 0; i< quant; i++){
 
-        modif[i] =  lvls.levels[atual].modifiers[i]; 
+        modif[i] =  lvls.levels[levelAtual].modifiers[i]; 
         
     }
    
