@@ -2,9 +2,9 @@
 {
         "levels": [
             {"name": "Growing","initial": ["1",  "ff0000"],"final":["2","ff0000"],"modifiers":["resize"]},
-            {"name": "Let it blue","initial": [ "1", "ff0000"],"final":[ "1", "0000ff "],"modifiers":["colorize"]},
+            {"name": "Let it blue","initial": [ "1", "ff0000"],"final":[ "1", "0000ff"],"modifiers":["colorize"]},
             {"name": "Pulsating","initial": [ "2", "ff0000"],"final":[ "2","ff0000"],"modifiers":["resize","resize"]}, 
-            {"name": "Mix and Match","initial": ["2", "ff0000"],"final":[ "1", "0000ff "],"modifiers":["colorize","resize"]}, 
+            {"name": "Mix and Match","initial": ["2", "ff0000"],"final":[ "1", "0000ff"],"modifiers":["colorize","resize"]}, 
             {"name": "Time to Choose","initial": [ "1", "ff0000"],"final":["1", "ff0000"],"modifiers":["select"]} 
         ]
  
