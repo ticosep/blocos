@@ -1,9 +1,9 @@
 var levelAtual = 0;
-var tela, trilho, bloco1, bloco2, mod1, mod2;
+var tela, trilho, bloco1, bloco2, mod1, mod2,muda = 0;
 var modif = [];
 
 
-
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 setup();
 
 function setup() {
@@ -21,19 +21,14 @@ state(delta);
 }
 
 function play(delta) {
-  
-    if(sobrepos(bloco1,mod1)){
-        console.log('mudaLevel');
-        levelAtual = levelAtual + 1;
-        setup();
-        
-    }else{
-
-        console.log('nada');
-    }
     
+    checaSobreposicaoMod();
+    checaSobreposicaoBloco2();      
+        
 }
 
+
+    
 
 
 function carregaLevelAtual(levelAtual){
@@ -76,8 +71,11 @@ function geraBlocos(levelAtual){
         blocoGraph.endFill();
         //transforma o retangulo criado em um sprite
         bloco1 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
-        bloco1.x = 0;
-        bloco1.y =  window.innerHeight/2 - window.innerHeight/12;
+        bloco1.x = window.innerHeight/12;
+        bloco1.y =  window.innerHeight/2;
+        bloco1.anchor.set(0.5);
+        
+  
         //deixa bloco interativo
         bloco1.interactive = true;
         bloco1.buttonMode = true;
@@ -93,8 +91,9 @@ function geraBlocos(levelAtual){
         blocoGraph.endFill();
         //transforma o retangulo criado em um sprite
         bloco1 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
-        bloco1.x = 0;
-        bloco1.y =  window.innerHeight/2 - window.innerHeight/8;
+        bloco1.x = window.innerHeight/12;
+        bloco1.y =  window.innerHeight/2;
+        bloco1.anchor.set(0.5);
         //deixa bloco interativo
         bloco1.interactive = true;
         bloco1.buttonMode = true;
@@ -166,6 +165,7 @@ function iniciaCaminho(){
         mod1.y = window.innerHeight/2 - window.innerHeight/12;
         tela.stage.addChild(mod1);
     }
+    //vetor contendo os modificadores, na ordem correta
     for(i = 0; i< quant; i++){
 
         modif[i] =  lvls.levels[levelAtual].modifiers[i]; 
@@ -177,19 +177,71 @@ function iniciaCaminho(){
  }
 
 
- function metodoMod(type){
-    
-    
+ function metodoMod(type,modificador){
+   
     if (type == "colorize"){
 
+        modificador.visible = false;
+        TweenMax.pauseAll();
+        TweenMax.to(bloco1,1,{fill: "blue"});
+        TweenMax.resumeAll();
     }
     else if(type == "resize"){
-
-    }
+        
+        var scaleMuday = bloco2.height / bloco1.height;
+        modificador.visible = false;
+        TweenMax.pauseAll();
+        TweenMax.to(bloco1.scale,1,{y: scaleMuday*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday*bloco1.scale.y)}); 
+      }
     else{
 
     }
  }
+//funcao que checa se os tamanhos estao iguais, se sim o bloco1 volta a percorer o trilho
+ function aniCompleta(valor){
+     
+    if (valor.toFixed(1) == bloco1.scale.y.toFixed(1)){
+        TweenMax.resumeAll();
+    }
+        
+  
+ }
 
+ function checaSobreposicaoMod(){
+    if(modif.length == 1){
 
+        if(sobrepos(bloco1,mod1)){
+           
+            metodoMod(modif[0],mod1);
+            
+                    
+        }else {
+            console.log('sem sobreposicao');
+        }
+
+    }else{
+        
+        if(sobrepos(bloco1,mod1)){
+
+            metodoMod(modif[0].mod1);
+            
+                    
+        }else if(sobrepos(bloco1,mod2)){
+            
+            metodoMod(modif[1],mod2);
     
+        } else{
+    
+            console.log('sem sobreposiçao');
+        }
+    }
+ }
+ 
+ function checaSobreposicaoBloco2(){
+    if(sobrepos(bloco1,bloco2)){
+        levelAtual ++;
+        setup();
+    }else{
+        console.log('nao muda level')
+    }
+ }
