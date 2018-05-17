@@ -3,7 +3,7 @@ var tela, trilho, bloco1, bloco2, mod1, mod2;
 var modif = [];
 
 
-var colisao = new Bump(PIXI);
+
 setup();
 
 function setup() {
@@ -22,18 +22,16 @@ state(delta);
 
 function play(delta) {
   
-  if (colisao.hit(bloco1,bloco2)) {
+    if(sobrepos(bloco1,mod1)){
+        console.log('mudaLevel');
+        levelAtual = levelAtual + 1;
+        setup();
+        
+    }else{
 
-    console.log('mudaLevel');
-    levelAtual = levelAtual + 1;
-    setup();
-
-  } else {
-
-   
-    console.log("N hit!");
+        console.log('nada');
+    }
     
-  }
 }
 
 
@@ -192,3 +190,6 @@ function iniciaCaminho(){
 
     }
  }
+
+
+    
