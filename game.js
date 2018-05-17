@@ -66,11 +66,12 @@ function geraBlocos(levelAtual){
     if (lvls.levels[levelAtual].initial[0] == 1){
         
 
-        blocoGraph.beginFill(parseInt(lvls.levels[levelAtual].initial[1],16));
+        blocoGraph.beginFill(0xffffff);
         blocoGraph.drawRect(0,0, window.innerHeight/6, window.innerHeight/6);
         blocoGraph.endFill();
         //transforma o retangulo criado em um sprite
         bloco1 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
+        bloco1.tint = parseInt(lvls.levels[levelAtual].initial[1],16);
         bloco1.x = window.innerHeight/12;
         bloco1.y =  window.innerHeight/2;
         bloco1.anchor.set(0.5);
@@ -86,11 +87,12 @@ function geraBlocos(levelAtual){
     else {
         
         
-        blocoGraph.beginFill(parseInt(lvls.levels[levelAtual].initial[1],16));
+        blocoGraph.beginFill(0xffffff);
         blocoGraph.drawRect(0,0, window.innerHeight/6, window.innerHeight/4);
         blocoGraph.endFill();
         //transforma o retangulo criado em um sprite
         bloco1 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
+        bloco1.tint = parseInt(lvls.levels[levelAtual].initial[1],16);
         bloco1.x = window.innerHeight/12;
         bloco1.y =  window.innerHeight/2;
         bloco1.anchor.set(0.5);
@@ -172,18 +174,16 @@ function iniciaCaminho(){
         
     }
 
-    
-    
  }
 
 
- function metodoMod(type,modificador){
+ function metodoMod(type,modificador,color,size){
    
     if (type == "colorize"){
 
         modificador.visible = false;
         TweenMax.pauseAll();
-        TweenMax.to(bloco1,1,{fill: "blue"});
+        bloco1.tint = parseInt(lvls.levels[levelAtual].final[1],16);
         TweenMax.resumeAll();
     }
     else if(type == "resize"){
@@ -197,6 +197,7 @@ function iniciaCaminho(){
 
     }
  }
+
 //funcao que checa se os tamanhos estao iguais, se sim o bloco1 volta a percorer o trilho
  function aniCompleta(valor){
      
@@ -208,6 +209,7 @@ function iniciaCaminho(){
  }
 
  function checaSobreposicaoMod(){
+
     if(modif.length == 1){
 
         if(sobrepos(bloco1,mod1)){
@@ -222,12 +224,12 @@ function iniciaCaminho(){
     }else{
         
         if(sobrepos(bloco1,mod1)){
-
-            metodoMod(modif[0].mod1);
+            
+            metodoMod(modif[0],mod1);
             
                     
         }else if(sobrepos(bloco1,mod2)){
-            
+            alert('test');
             metodoMod(modif[1],mod2);
     
         } else{
