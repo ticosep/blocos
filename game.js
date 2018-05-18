@@ -1,5 +1,6 @@
 var levelAtual = 0;
 var click = -1;
+var final = false;
 var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, muda = 0;
 var modif = [];
 
@@ -9,6 +10,7 @@ setup();
 
 function setup() {
     
+    checaFinal();
     carregaLevelAtual(levelAtual);
     state = play;
     tela.ticker.add(delta => gameLoop(delta));
@@ -257,8 +259,11 @@ function iniciaCaminho(){
  
  function checaSobreposicaoBloco2(){
     if(sobrepos(bloco1,bloco2)){
-        levelAtual ++;
-        setup();
+
+            levelAtual ++;
+            setup();
+
+        
     }else{
        // console.log('nao muda level')
     }
@@ -267,40 +272,24 @@ function iniciaCaminho(){
  function imgSpriteMod(type, value){
 
     if (type == "resize"){
+
         return 'imgs/' + type + value + '.png';
+
     }else if (type == "colorize"){
+
         return 'imgs/' + type + '.png';
+
     }else{
+
         return 'imgs/' + type + '.png';
+
     }
  }
 
  function select(){
     
     var modificadores =["colorize","resize1","resize2"];
-    if (modificadores[click] ==  "colorize") {
-
-        lvls.levels[levelAtual].modifiers[0].value = "0000ff";
-        lvls.levels[levelAtual].modifiers[0].type = "colorize";
-        var textura = new PIXI.Texture.fromImage(imgSpriteMod("colorize",0));
-        mod1.setTexture(textura);
-        
-
-    }else if (modificadores[click] ==  "resize1"){
-
-        lvls.levels[levelAtual].modifiers[0].value = "1";
-        lvls.levels[levelAtual].modifiers[0].type = "resize";
-        var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","1"));
-        mod1.setTexture(textura);
-        
-    }else{
-
-        lvls.levels[levelAtual].modifiers[0].value = "2";
-        lvls.levels[levelAtual].modifiers[0].type = "resize";
-        var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","2"));
-        mod1.setTexture(textura);
-        
-    }
+    
     if (click == (modificadores.length) -1){
 
         click = 0;
@@ -310,4 +299,49 @@ function iniciaCaminho(){
         click++;
     }
     
+
+    if (modificadores[click] ==  "colorize") {
+
+        lvls.levels[levelAtual].modifiers[0].value = "0000ff";
+        lvls.levels[levelAtual].modifiers[0].type = "colorize";
+        var textura = new PIXI.Texture.fromImage(imgSpriteMod("colorize",0));
+        mod1.setTexture(textura);
+        final = false;
+
+    }else if (modificadores[click] ==  "resize1"){
+
+        lvls.levels[levelAtual].modifiers[0].value = "1";
+        lvls.levels[levelAtual].modifiers[0].type = "resize";
+        var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","1"));
+        mod1.setTexture(textura);
+        final = false;
+
+    }else if (modificadores[click] ==  "resize2"){
+
+        console.log('essa fera ai meu');
+        lvls.levels[levelAtual].modifiers[0].value = "2";
+        lvls.levels[levelAtual].modifiers[0].type = "resize";
+        var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","2"));
+        mod1.setTexture(textura);
+        final = true;
+        
+    }
+  
  }
+
+ function checaFinal(){
+    console.log(final);
+    console.log(levelAtual);
+    if(final == true && levelAtual == 5){
+
+        console.log("parabens jogador, você venceu!");
+        window.stop();
+    }
+    if(final == false && levelAtual == 5){
+
+        console.log("ops, modificador incorreto, o level sera reiniciado");
+        levelAtual --;
+        lvls.levels[levelAtual].modifiers[0].type = "select";
+        setup();
+    }
+}
