@@ -187,19 +187,15 @@ function iniciaCaminho(){
         if (value == 2){
 
             var scaleMuday = (window.innerHeight/4) / bloco1.height;
-            console.log(scaleMuday);
-            modificador.visible = false;
-            caminho.pause();
-            resizer = TweenMax.to(bloco1.scale,1,{y: scaleMuday*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday*bloco1.scale.y)}); 
-
+           
         }else{
 
-            var scaleMuday2 = (window.innerHeight/6) / bloco1.height;
-            modificador.visible = false;
-            caminho.pause();
-            resizer = TweenMax.to(bloco1.scale,1,{y: scaleMuday2*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday2*bloco1.scale.y)}); 
-
+            var scaleMuday = (window.innerHeight/6) / bloco1.height;
+            
         }
+        modificador.visible = false;
+        caminho.pause();
+        resizer = TweenMax.to(bloco1.scale,1,{y: scaleMuday*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday*bloco1.scale.y)}); 
 
       }
     else{
