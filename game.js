@@ -136,36 +136,35 @@ function iniciaCaminho(){
  }
 
  function criaMod(quant){
-    var blocoGraph = new PIXI.Graphics();
-    
+       
     //cria os modificadores conforme a quantidade existente no json
     //conforme o numero de modficadores existente, os mesmos sao posicionados de maneira correta no campo
     // ja que o campo tem tamanho dinamico
     if(quant == 2){
         
-        blocoGraph.beginFill(0xff0);
-        blocoGraph.drawRect(0, 0, window.innerHeight/6, window.innerHeight/6);
-        blocoGraph.endFill();
-      
-        mod1 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
+        
+        mod1 = new PIXI.Sprite.fromImage(imgSpriteMod(lvls.levels[levelAtual].modifiers[0].type, lvls.levels[levelAtual].modifiers[0].value));
+        mod1.height = window.innerHeight/6;
+        mod1.width = window.innerHeight/6;
         mod1.x = window.innerWidth/2 - window.innerHeight/6;
-        mod1.y = window.innerHeight/2 - window.innerHeight/12;
-        mod2 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
+        mod1.y = window.innerHeight/2 - window.innerHeight/12; 
+        mod2 = new PIXI.Sprite.fromImage(imgSpriteMod(lvls.levels[levelAtual].modifiers[1].type, lvls.levels[levelAtual].modifiers[1].value));
+        mod2.height = window.innerHeight/6;
+        mod2.width = window.innerHeight/6;
         mod2.x = window.innerWidth/2 + window.innerHeight/6;
         mod2.y = window.innerHeight/2 - window.innerHeight/12;
         tela.stage.addChild(mod1);
         tela.stage.addChild(mod2);
        }
     else{
-        blocoGraph.beginFill(0xff0);
-        blocoGraph.drawRect(0, 0, window.innerHeight/6, window.innerHeight/6);
-        blocoGraph.endFill()
-
-
-        mod1 = new PIXI.Sprite(blocoGraph.generateCanvasTexture());
+        
+        mod1 = new PIXI.Sprite.fromImage(imgSpriteMod(lvls.levels[levelAtual].modifiers[0].type, lvls.levels[levelAtual].modifiers[0].value));
+        mod1.height = window.innerHeight/6;
+        mod1.width = window.innerHeight/6;
         mod1.x = window.innerWidth/2;
-        mod1.y = window.innerHeight/2 - window.innerHeight/12;
+        mod1.y = window.innerHeight/2 - window.innerHeight/12; 
         tela.stage.addChild(mod1);
+     
     }
       
                  
@@ -251,5 +250,15 @@ function iniciaCaminho(){
         setup();
     }else{
        // console.log('nao muda level')
+    }
+ }
+
+ function imgSpriteMod(type, value){
+
+    if (type == "resize"){
+        
+        return 'imgs/' + type + value + '.png';
+    }else{
+        return 'imgs/' + type + '.png';
     }
  }
