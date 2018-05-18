@@ -1,13 +1,15 @@
 var levelAtual = 0;
 var click = -1;
 var final = false;
-var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, muda = 0;
-var modif = [];
+var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho;
 
 
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
+//inicia o jogo
 setup();
 
+
+//funcoes reponsaveis pelo loop do jogo
 function setup() {
     
     checaFinal();
@@ -18,9 +20,9 @@ function setup() {
   }
   
 function gameLoop(delta){
-  //Update the current game state:
 
-state(delta);
+    state(delta);
+    
 }
 
 function play(delta) {
@@ -36,7 +38,7 @@ function play(delta) {
 
 function carregaLevelAtual(levelAtual){
 
-   
+   //carrega os sprites do level atual
     geraTela();
     geraBlocos(levelAtual);
     criaMod(lvls.levels[levelAtual].modifiers.length);
@@ -62,7 +64,7 @@ function geraTela(){
 }
 
 function geraBlocos(levelAtual){
-    //gera e posiciona blocos do jogo de acordo com a janela do navegador
+    //gera e posiciona blocos do jogo de acordo com a janela do navegador e o level atual
     var blocoGraph2 = new PIXI.Graphics();
     var blocoGraph = new PIXI.Graphics();
 
@@ -133,7 +135,7 @@ function geraBlocos(levelAtual){
 
 
 function iniciaCaminho(){
-    //faz o bloco1 andar ate o fim do campo de jogo
+    //faz o bloco1 após click, andar ate o fim do campo de jogo
     caminho = TweenMax.to(bloco1, 10, {x: window.innerWidth});
    
  }
@@ -167,7 +169,7 @@ function iniciaCaminho(){
         mod1.width = window.innerHeight/6;
         mod1.x = window.innerWidth/2;
         mod1.y = window.innerHeight/2 - window.innerHeight/12;
-
+        //se o modificador for do tipo select entao este deve ser interativo
         if (lvls.levels[levelAtual].modifiers[0].type == "select"){
             var click = -1;
             mod1.interactive = true;
@@ -186,7 +188,7 @@ function iniciaCaminho(){
 
 
  function metodoMod(type,value, modificador){
-    
+    //quando um bloco se sobrepoem a um modificador, esta função faz as ações conforme o type e value definidos
     if (type == "colorize"){
 
         modificador.visible = false;
@@ -215,9 +217,9 @@ function iniciaCaminho(){
     }
  }
 
-//funcao que checa se os tamanhos estao iguais, se sim o bloco1 volta a percorer o trilho
+
  function aniCompleta(valor){
-     
+    //funcao que checa se os tamanhos estao iguais, se sim o bloco1 volta a percorer o trilho
     if (valor.toFixed(1) == bloco1.scale.y.toFixed(1)){
         
         resizer.kill();
@@ -229,7 +231,7 @@ function iniciaCaminho(){
  }
 
  function checaSobreposicaoMod(){
-
+    //checa se houve sobreposição entra um bloco e um modificador, caso house o metodo do modificador é excutado
     if(lvls.levels[levelAtual].modifiers.length == 1){
 
         if(sobrepos(bloco1,mod1)){
@@ -258,6 +260,8 @@ function iniciaCaminho(){
  }
  
  function checaSobreposicaoBloco2(){
+     //checa se o bloco 1 chegou ao final do level, se sim, o levelAtual é incrementado
+     // e a função setup iniciada para o novo level
     if(sobrepos(bloco1,bloco2)){
 
             levelAtual ++;
@@ -270,7 +274,7 @@ function iniciaCaminho(){
  }
 
  function imgSpriteMod(type, value){
-
+    //responsavel por retornar a imagem que sera feita a textura do modificador passado.
     if (type == "resize"){
 
         return 'imgs/' + type + value + '.png';
@@ -287,7 +291,8 @@ function iniciaCaminho(){
  }
 
  function select(){
-    
+    //a cada click no modificador do tipo select, ele assume um dos possiveis valores dos modificadores
+    // e sua textura ja criados no jogo, isto é, o usuario deve clicar no modificador select ate encontrar o que deseja
     var modificadores =["colorize","resize1","resize2"];
     
     if (click == (modificadores.length) -1){
@@ -330,8 +335,8 @@ function iniciaCaminho(){
  }
 
  function checaFinal(){
-    console.log(final);
-    console.log(levelAtual);
+     //checa se o final do jogo foi atingido, caso tenha sido atingido mas o modificador era
+     //incorreto o level é reiniciado, se não, o jogo é terminado com saudações.
     if(final == true && levelAtual == 5){
 
         console.log("parabens jogador, você venceu!");
