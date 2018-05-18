@@ -1,4 +1,5 @@
 var levelAtual = 0;
+var click = -1;
 var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, muda = 0;
 var modif = [];
 
@@ -155,6 +156,7 @@ function iniciaCaminho(){
         mod2.y = window.innerHeight/2 - window.innerHeight/12;
         tela.stage.addChild(mod1);
         tela.stage.addChild(mod2);
+
        }
     else{
         
@@ -162,7 +164,16 @@ function iniciaCaminho(){
         mod1.height = window.innerHeight/6;
         mod1.width = window.innerHeight/6;
         mod1.x = window.innerWidth/2;
-        mod1.y = window.innerHeight/2 - window.innerHeight/12; 
+        mod1.y = window.innerHeight/2 - window.innerHeight/12;
+
+        if (lvls.levels[levelAtual].modifiers[0].type == "select"){
+            var click = -1;
+            mod1.interactive = true;
+            mod1.buttonMode = true;
+            mod1.on('click',select);
+
+        } 
+
         tela.stage.addChild(mod1);
      
     }
@@ -256,9 +267,47 @@ function iniciaCaminho(){
  function imgSpriteMod(type, value){
 
     if (type == "resize"){
-        
         return 'imgs/' + type + value + '.png';
+    }else if (type == "colorize"){
+        return 'imgs/' + type + '.png';
     }else{
         return 'imgs/' + type + '.png';
     }
+ }
+
+ function select(){
+    
+    var modificadores =["colorize","resize1","resize2"];
+    if (modificadores[click] ==  "colorize") {
+
+        lvls.levels[levelAtual].modifiers[0].value = "0000ff";
+        lvls.levels[levelAtual].modifiers[0].type = "colorize";
+        var textura = new PIXI.Texture.fromImage(imgSpriteMod("colorize",0));
+        mod1.setTexture(textura);
+        
+
+    }else if (modificadores[click] ==  "resize1"){
+
+        lvls.levels[levelAtual].modifiers[0].value = "1";
+        lvls.levels[levelAtual].modifiers[0].type = "resize";
+        var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","1"));
+        mod1.setTexture(textura);
+        
+    }else{
+
+        lvls.levels[levelAtual].modifiers[0].value = "2";
+        lvls.levels[levelAtual].modifiers[0].type = "resize";
+        var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","2"));
+        mod1.setTexture(textura);
+        
+    }
+    if (click == (modificadores.length) -1){
+
+        click = 0;
+
+    }else{
+        
+        click++;
+    }
+    
  }
