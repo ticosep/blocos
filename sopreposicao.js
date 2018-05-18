@@ -1,9 +1,9 @@
 function sobrepos(r1, r2) {
 
-    //Define the variables we'll need to calculate
-    let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+    
+    let hit, vx;
   
-    //hit will determine whether there's a collision
+    
     hit = false;
   
     
@@ -12,10 +12,10 @@ function sobrepos(r1, r2) {
    
   
   
-    //Calculate the distance vector between the sprites
+    //calculla a distancia entre o centro do r1 e a borda do r2
     vx = r1.centerX - r2.bordaX;
  
-    //Check for a collision on the x axis
+    //checa se houve sobreposicao
     if (vx >= 0) {
 
              
@@ -27,6 +27,6 @@ function sobrepos(r1, r2) {
       hit = false;
     }
   
-    //`hit` will be either `true` or `false`
+    //retorna true se houve sobreposicao, false se nao
     return hit;
   };
