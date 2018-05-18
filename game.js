@@ -1,5 +1,5 @@
 var levelAtual = 0;
-var tela, trilho, bloco1, bloco2, mod1, mod2,muda = 0;
+var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, muda = 0;
 var modif = [];
 
 
@@ -131,7 +131,7 @@ function geraBlocos(levelAtual){
 
 function iniciaCaminho(){
     //faz o bloco1 andar ate o fim do campo de jogo
-    TweenMax.to(bloco1, 10, {x: window.innerWidth});
+    caminho = TweenMax.to(bloco1, 10, {x: window.innerWidth});
    
  }
 
@@ -167,31 +167,40 @@ function iniciaCaminho(){
         mod1.y = window.innerHeight/2 - window.innerHeight/12;
         tela.stage.addChild(mod1);
     }
-    //vetor contendo os modificadores, na ordem correta
-    for(i = 0; i< quant; i++){
-
-        modif[i] =  lvls.levels[levelAtual].modifiers[i]; 
-        
-    }
+      
+                 
 
  }
 
 
- function metodoMod(type,modificador,color,size){
-   
+ function metodoMod(type,value, modificador){
+    
     if (type == "colorize"){
 
         modificador.visible = false;
-        TweenMax.pauseAll();
-        bloco1.tint = parseInt(lvls.levels[levelAtual].final[1],16);
-        TweenMax.resumeAll();
+        caminho.pause();
+        bloco1.tint = parseInt(value,16);
+        caminho.resume();
     }
     else if(type == "resize"){
         
-        var scaleMuday = bloco2.height / bloco1.height;
-        modificador.visible = false;
-        TweenMax.pauseAll();
-        TweenMax.to(bloco1.scale,1,{y: scaleMuday*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday*bloco1.scale.y)}); 
+        if (value == 2){
+
+            var scaleMuday = (window.innerHeight/4) / bloco1.height;
+            console.log(scaleMuday);
+            modificador.visible = false;
+            caminho.pause();
+            resizer = TweenMax.to(bloco1.scale,1,{y: scaleMuday*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday*bloco1.scale.y)}); 
+
+        }else{
+
+            var scaleMuday2 = (window.innerHeight/6) / bloco1.height;
+            modificador.visible = false;
+            caminho.pause();
+            resizer = TweenMax.to(bloco1.scale,1,{y: scaleMuday2*bloco1.scale.y, onUpdate: aniCompleta(scaleMuday2*bloco1.scale.y)}); 
+
+        }
+
       }
     else{
 
@@ -202,7 +211,10 @@ function iniciaCaminho(){
  function aniCompleta(valor){
      
     if (valor.toFixed(1) == bloco1.scale.y.toFixed(1)){
-        TweenMax.resumeAll();
+        
+        resizer.kill();
+        caminho.resume();
+        
     }
         
   
@@ -210,32 +222,30 @@ function iniciaCaminho(){
 
  function checaSobreposicaoMod(){
 
-    if(modif.length == 1){
+    if(lvls.levels[levelAtual].modifiers.length == 1){
 
         if(sobrepos(bloco1,mod1)){
            
-            metodoMod(modif[0],mod1);
+            metodoMod(lvls.levels[levelAtual].modifiers[0].type,lvls.levels[levelAtual].modifiers[0].value,mod1);
             
                     
         }else {
-            console.log('sem sobreposicao');
+            //console.log('sem sobreposicao');
         }
 
     }else{
         
         if(sobrepos(bloco1,mod1)){
             
-            metodoMod(modif[0],mod1);
+            metodoMod(lvls.levels[levelAtual].modifiers[0].type,lvls.levels[levelAtual].modifiers[0].value,mod1);
             
                     
-        }else if(sobrepos(bloco1,mod2)){
-            alert('test');
-            metodoMod(modif[1],mod2);
-    
-        } else{
-    
-            console.log('sem sobreposiçao');
         }
+        if(sobrepos(bloco1,mod2)){
+           
+            metodoMod(lvls.levels[levelAtual].modifiers[1].type,lvls.levels[levelAtual].modifiers[1].value,mod2);
+    
+        } 
     }
  }
  
@@ -244,6 +254,6 @@ function iniciaCaminho(){
         levelAtual ++;
         setup();
     }else{
-        console.log('nao muda level')
+       // console.log('nao muda level')
     }
  }
