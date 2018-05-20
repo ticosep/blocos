@@ -1,7 +1,7 @@
 var levelAtual = 0;
 var click = -1;
 var final = false;
-var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto, telaFim;
+var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto, telaFim, telaBlur;
 
 
 
@@ -454,10 +454,9 @@ function geraBotaoRealod(){
 }
 
 function tutorial(estagio){
-//funcao que gera tela com instrucoes para jogador
-console.log(estagio);
+//funcao que gera tela com instrucoes para jogador, em frente a tela principal com blur
 if(estagio == 0){
-    var telaBlur = new PIXI.Application({transparent: true});
+    telaBlur = new PIXI.Application({transparent: true});
     telaBlur.renderer.autoResize = true;
     telaBlur.renderer.view.style.position = "absolute";
     telaBlur.renderer.view.style.display = "block";
@@ -473,7 +472,13 @@ if(estagio == 0){
     instruc.y = window.innerHeight/2;
     blur.blur = 10;
     tela.stage.filters = [blur];
-    
     telaBlur.stage.addChild(instruc);
+    TweenMax.to(instruc,5,{pixi: {tint: 0xff0000}, onComplete:disabiitablur});
+
+    }
 }
+
+function disabiitablur(){
+    tela.stage.filters = null;
+    telaBlur.stage.visible = false;
 }
