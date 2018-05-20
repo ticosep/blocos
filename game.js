@@ -2,6 +2,7 @@ var levelAtual = 0;
 var click = -1;
 var final = false;
 var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto, telaFim, telaBlur;
+var tuto = true;
 
 
 
@@ -32,6 +33,7 @@ function play(delta) {
         
 }
 
+//desabilita a visao da tela inicia, para mostrar apenas a final
 function fim(){
 
     tela.visible = false;
@@ -124,8 +126,9 @@ function geraBlocos(levelAtual){
         blocoGraph2.endFill();
 
         bloco2 = new PIXI.Sprite(blocoGraph2.generateCanvasTexture());
-        bloco2.x = window.innerWidth - window.innerHeight/6;
-        bloco2.y = window.innerHeight/2 - window.innerHeight/12;
+        bloco2.anchor.set(0.5);
+        bloco2.x = window.innerWidth - window.innerHeight/12;
+        bloco2.y = window.innerHeight/2;
         tela.stage.addChild(bloco2);
     }
     else {
@@ -135,8 +138,9 @@ function geraBlocos(levelAtual){
         blocoGraph2.endFill();
 
         bloco2 = new PIXI.Sprite(blocoGraph2.generateCanvasTexture());
-        bloco2.x = window.innerWidth - window.innerHeight/6;
-        bloco2.y = window.innerHeight/2 - window.innerHeight/8;
+        bloco2.anchor.set(0.5);
+        bloco2.x = window.innerWidth - window.innerHeight/12;
+        bloco2.y = window.innerHeight/2;
         tela.stage.addChild(bloco2);
     }
  
@@ -160,13 +164,15 @@ function iniciaCaminho(){
         mod1 = new PIXI.Sprite.fromImage(imgSpriteMod(lvls.levels[levelAtual].modifiers[0].type, lvls.levels[levelAtual].modifiers[0].value));
         mod1.height = window.innerHeight/6;
         mod1.width = window.innerHeight/6;
+        mod1.anchor.set(0.5);
         mod1.x = window.innerWidth/2 - window.innerHeight/6;
-        mod1.y = window.innerHeight/2 - window.innerHeight/12; 
+        mod1.y = window.innerHeight/2; 
         mod2 = new PIXI.Sprite.fromImage(imgSpriteMod(lvls.levels[levelAtual].modifiers[1].type, lvls.levels[levelAtual].modifiers[1].value));
         mod2.height = window.innerHeight/6;
         mod2.width = window.innerHeight/6;
+        mod2.anchor.set(0.5);
         mod2.x = window.innerWidth/2 + window.innerHeight/6;
-        mod2.y = window.innerHeight/2 - window.innerHeight/12;
+        mod2.y = window.innerHeight/2;
         tela.stage.addChild(mod1);
         tela.stage.addChild(mod2);
 
@@ -176,8 +182,9 @@ function iniciaCaminho(){
         mod1 = new PIXI.Sprite.fromImage(imgSpriteMod(lvls.levels[levelAtual].modifiers[0].type, lvls.levels[levelAtual].modifiers[0].value));
         mod1.height = window.innerHeight/6;
         mod1.width = window.innerHeight/6;
+        mod1.anchor.set(0.5);
         mod1.x = window.innerWidth/2;
-        mod1.y = window.innerHeight/2 - window.innerHeight/12;
+        mod1.y = window.innerHeight/2;
         //se o modificador for do tipo select entao este deve ser interativo
         if (lvls.levels[levelAtual].modifiers[0].type == "select"){
             var click = -1;
@@ -202,7 +209,7 @@ function iniciaCaminho(){
 
         modificador.visible = false;
         caminho.pause();
-        bloco1.tint = parseInt(value,16);
+        TweenMax.to(bloco1,1,{pixi:{tint:parseInt(value,16)}});
         caminho.resume();
     }
     else if(type == "resize"){
@@ -340,6 +347,7 @@ function iniciaCaminho(){
         final = true;
         
     }
+    
   
  }
 
@@ -353,8 +361,9 @@ function iniciaCaminho(){
     }
     else if(final == false && levelAtual == 5){
 
-        console.log("ops, modificador incorreto, o level sera reiniciado");
-        levelAtual --;
+        tuto = false;
+        alert("ops, modificador incorreto, o level sera reiniciado");
+        levelAtual = 4;
         lvls.levels[levelAtual].modifiers[0].type = "select";
         state = play;
         setup();
@@ -405,7 +414,7 @@ function animaTexto(name){
             y: 1, repeat:-1}); 
     }else{
         texto.tint =  0xff0000;
-        TweenMax.to(texto, 3, {pixi:{skewX:15, skewY:15} , repeat:-1});
+        TweenMax.to(texto, 3, {pixi:{skewX:15} , repeat:-1});
     }
 
 }
@@ -436,49 +445,89 @@ function ultimoLv(){
 }
 
 function geraBotaoRealod(){
-    //Gera botao que da opcao para reinicio do jogo, zera variaveis e se clicado retorna a tela inicial
-       var botao = new PIXI.Text("CLIQUE NA TELA PARA JOGAR NOVAMENTE",
-            {fontFamily : 'Arial', fontSize: 70, fill : 'white', align : 'center'});
+    //Gera botao que da opcao para reinicio do jogo, reinicia variaveis e se clicado retorna a tela inicial
+       
+       var botao = new PIXI.Text("CLIQUE AQUI PARA JOGAR NOVAMENTE",
+            {fontFamily : 'Arial', fontSize: 32, fill : 'white', align : 'center'});
             
        levelAtual = 0;
        lvls.levels[4].modifiers[0].type = "select";
        state = play;
+       final = false;
        botao.anchor.set(0.5);
        botao.x = window.innerWidth/2;
        botao.y = window.innerHeight/2;
-       botao.hitArea = new PIXI.Rectangle(0,0,window.innerWidth,window.innerHeight);
        botao.interactive = true;
        botao.buttonMode = true;
        botao.on('click',setup);
+       botao.alpha = 10;
+       TweenMax.to(botao,3,{pixi:{alpha:100}});
        telaFim.stage.addChild(botao);
+      
 }
 
-function tutorial(estagio){
+function tutorial(estagio, tuto){
 //funcao que gera tela com instrucoes para jogador, em frente a tela principal com blur
+
 if(estagio == 0){
+
     telaBlur = new PIXI.Application({transparent: true});
     telaBlur.renderer.autoResize = true;
     telaBlur.renderer.view.style.position = "absolute";
     telaBlur.renderer.view.style.display = "block";
     telaBlur.renderer.resize(window.innerWidth, window.innerHeight);
     document.body.appendChild(telaBlur.view);
-    
     var blur = new PIXI.filters.BlurFilter();
     var instruc = new PIXI.Text("CLIQUE NO BLOCO MAIS A ESQUERDA PARA INICIAR O JOGO",
                     {fontFamily : 'Arial', fontSize: 32, fill : 'white', align : 'center'});
 
+     instruc.stroke = 0x360a00;
+     instruc.strokeThickness = 4;
+            
     instruc.anchor.set(0.5);
     instruc.x = window.innerWidth/2;
     instruc.y = window.innerHeight/2;
-    blur.blur = 10;
+    blur.blur = 15;
     tela.stage.filters = [blur];
-    telaBlur.stage.addChild(instruc);
-    TweenMax.to(instruc,5,{pixi: {tint: 0xff0000}, onComplete:disabiitablur});
 
+    telaBlur.stage.addChild(instruc);
+    TweenMax.to(instruc,5,{pixi: {colorize: 'red'}, onComplete:desabiitablur});
+
+    }else if(estagio == 4 && tuto == true){
+        
+        telaBlur = new PIXI.Application({transparent: true});
+        telaBlur.renderer.autoResize = true;
+        telaBlur.renderer.view.style.position = "absolute";
+        telaBlur.renderer.view.style.display = "block";
+        telaBlur.renderer.resize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(telaBlur.view);
+
+        var blur = new PIXI.filters.BlurFilter();
+        var instruc = new PIXI.Text("CLIQUE NO BLOCO CENTRAL PARA SELECIONAR O MODIFICADOR DESEJADO \n " +
+                                      "A CADA CLIQUE O MODIFICADOR IRA MUDAR",
+                        {fontFamily : 'Arial', fontSize: 32, fill : 'white', align : 'center'});
+
+        instruc.stroke = 0x360a00;
+        instruc.strokeThickness = 4;
+
+        instruc.anchor.set(0.5);
+        instruc.x = window.innerWidth/2;
+        instruc.y = window.innerHeight/2;
+        blur.blur = 15;
+        tela.stage.filters = [blur];
+        telaBlur.stage.addChild(instruc);
+        TweenMax.to(instruc,7,{pixi: {colorize: 'red'}, onComplete:desabiitablur});
     }
 }
 
-function disabiitablur(){
+function desabiitablur(){
+    //tira filtro da tela principal e retira a tela com a msg de tutorial
     tela.stage.filters = null;
-    telaBlur.stage.visible = false;
+    telaBlur.destroy(true);
+
 }
+
+    
+       
+   
+
