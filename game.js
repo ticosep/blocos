@@ -355,21 +355,22 @@ function iniciaCaminho(){
      //checa se o final do jogo foi atingido, caso tenha sido atingido mas o modificador era
      //incorreto o level é reiniciado, se não, o jogo é terminado com saudações.
     if(final == true && levelAtual == 5){
-       
+        
+        
         ultimoLv();
         state = fim;
     }
     else if(final == false && levelAtual == 5){
 
         tuto = false;
-        alert("ops, modificador incorreto, o level sera reiniciado");
+        alert("OPS! Modificador incorreto, o level sera reiniciado.");
         levelAtual = 4;
         lvls.levels[levelAtual].modifiers[0].type = "select";
         state = play;
         setup();
 
     }else{
-
+       
         carregaLevelAtual(levelAtual);
         state = play;
     }
@@ -460,64 +461,70 @@ function geraBotaoRealod(){
        botao.interactive = true;
        botao.buttonMode = true;
        botao.on('click',setup);
-       botao.alpha = 10;
-       TweenMax.to(botao,3,{pixi:{alpha:100}});
+       botao.alpha = 0;
+       TweenMax.to(botao,15,{pixi:{alpha:1}});
        telaFim.stage.addChild(botao);
       
 }
 
-function tutorial(estagio, tuto){
+function tutorial(estagio){
 //funcao que gera tela com instrucoes para jogador, em frente a tela principal com blur
+    var style = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 32,
+        fontWeight: 'bold',
+        fill: ['#ff0000', '#000000'],
+        stroke: 'white',
+        strokeThickness: 5,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+    });
+    
+    if(estagio == 0 && tuto == true){
 
-if(estagio == 0){
-
-    telaBlur = new PIXI.Application({transparent: true});
-    telaBlur.renderer.autoResize = true;
-    telaBlur.renderer.view.style.position = "absolute";
-    telaBlur.renderer.view.style.display = "block";
-    telaBlur.renderer.resize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(telaBlur.view);
-    var blur = new PIXI.filters.BlurFilter();
-    var instruc = new PIXI.Text("CLIQUE NO BLOCO MAIS A ESQUERDA PARA INICIAR O JOGO",
-                    {fontFamily : 'Arial', fontSize: 32, fill : 'white', align : 'center'});
-
-     instruc.stroke = 0x360a00;
-     instruc.strokeThickness = 4;
-            
-    instruc.anchor.set(0.5);
-    instruc.x = window.innerWidth/2;
-    instruc.y = window.innerHeight/2;
-    blur.blur = 15;
-    tela.stage.filters = [blur];
-
-    telaBlur.stage.addChild(instruc);
-    TweenMax.to(instruc,5,{pixi: {colorize: 'red'}, onComplete:desabiitablur});
-
-    }else if(estagio == 4 && tuto == true){
-        
         telaBlur = new PIXI.Application({transparent: true});
         telaBlur.renderer.autoResize = true;
         telaBlur.renderer.view.style.position = "absolute";
         telaBlur.renderer.view.style.display = "block";
         telaBlur.renderer.resize(window.innerWidth, window.innerHeight);
         document.body.appendChild(telaBlur.view);
-
         var blur = new PIXI.filters.BlurFilter();
-        var instruc = new PIXI.Text("CLIQUE NO BLOCO CENTRAL PARA SELECIONAR O MODIFICADOR DESEJADO \n " +
-                                      "A CADA CLIQUE O MODIFICADOR IRA MUDAR",
-                        {fontFamily : 'Arial', fontSize: 32, fill : 'white', align : 'center'});
-
-        instruc.stroke = 0x360a00;
-        instruc.strokeThickness = 4;
-
+        var instruc = new PIXI.Text("CLIQUE NO BLOCO MAIS A ESQUERDA PARA INICIAR O JOGO",style);
+                
         instruc.anchor.set(0.5);
         instruc.x = window.innerWidth/2;
         instruc.y = window.innerHeight/2;
         blur.blur = 15;
         tela.stage.filters = [blur];
+
         telaBlur.stage.addChild(instruc);
-        TweenMax.to(instruc,7,{pixi: {colorize: 'red'}, onComplete:desabiitablur});
-    }
+        instruc.alpha = 1;
+        TweenMax.to(instruc,6,{pixi: {alpha: 0}, onComplete:desabiitablur});
+
+    }else if(estagio == 4 && tuto == true){
+            
+            telaBlur = new PIXI.Application({transparent: true});
+            telaBlur.renderer.autoResize = true;
+            telaBlur.renderer.view.style.position = "absolute";
+            telaBlur.renderer.view.style.display = "block";
+            telaBlur.renderer.resize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(telaBlur.view);
+
+            var blur = new PIXI.filters.BlurFilter();
+            var instruc = new PIXI.Text("CLIQUE NO BLOCO CENTRAL PARA SELECIONAR O MODIFICADOR DESEJADO \n " +
+                                        "A CADA CLIQUE O MODIFICADOR IRA MUDAR",
+                                        style);
+
+
+            instruc.anchor.set(0.5);
+            instruc.x = window.innerWidth/2;
+            instruc.y = window.innerHeight/2;
+            blur.blur = 15;
+            tela.stage.filters = [blur];
+            telaBlur.stage.addChild(instruc);
+            instruc.alpha = 1;
+            TweenMax.to(instruc,8,{pixi: {alpha: 0}, onComplete:desabiitablur});
+        }
 }
 
 function desabiitablur(){
