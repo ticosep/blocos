@@ -473,7 +473,7 @@ function tutorial(estagio){
         fontFamily: 'Arial',
         fontSize: 32,
         fontWeight: 'bold',
-        fill: ['#ff0000', '#000000'],
+        fill: '#ff0000',
         stroke: 'white',
         strokeThickness: 5,
         dropShadow: true,
