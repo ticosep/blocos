@@ -6,7 +6,7 @@
             {"name": "Let it blue","initial": [ "1", "ff0000"],"final":[ "1", "0000ff"],"modifiers":[{"type":"colorize","value":"0000ff"}]},
             {"name": "Pulsating","initial": [ "2", "ff0000"],"final":[ "2","ff0000"],"modifiers":[{"type":"resize","value":"1"},{"type":"resize","value":"2"}]}, 
             {"name": "Mix and Match","initial": ["2", "ff0000"],"final":[ "1", "0000ff"],"modifiers":[{"type":"colorize","value":"0000ff"},{"type":"resize","value":"1"}]}, 
-            {"name": "Time to Choose","initial": [ "1", "ff0000"],"final":["1", "ff0000"],"modifiers":[{"type":"select","value":"x"}]} 
+            {"name": "Time to Choose","initial": [ "1", "ff0000"],"final":["2", "ff0000"],"modifiers":[{"type":"select","value":"x"}]} 
         ]
  
 }
