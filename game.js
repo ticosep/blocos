@@ -1,7 +1,13 @@
+//variavel que conta o level em que o jogo esta, a partir dela é gerado os objetos conforme o JSON
 var levelAtual = 0;
+//variavel que representa os clicks no modificador select, assim sendo, é incrementada a cada click e muda
+//o modificador conforme o elemento do array [click]
 var click = -1;
+//variavel que checa se o jogo chegou ao final
 var final = false;
+//variaveis globais que sao os objetos do jogo
 var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto, telaFim, telaBlur;
+//variavel que define se a mensagem de tutorial ja foi mostrada
 var tuto = true;
 
 
@@ -33,7 +39,7 @@ function play(delta) {
         
 }
 
-//desabilita a visao da tela inicia, para mostrar apenas a final
+//desabilita a visao da tela inicial, para mostrar apenas a final
 function fim(){
 
     tela.visible = false;
@@ -155,8 +161,7 @@ function iniciaCaminho(){
 
  function criaMod(quant){
        
-    //cria os modificadores conforme a quantidade existente no json
-    //conforme o numero de modficadores existente, os mesmos sao posicionados de maneira correta no campo
+     //conforme o numero de modficadores existente, os mesmos sao posicionados de maneira correta no campo
     // ja que o campo tem tamanho dinamico
     if(quant == 2){
         
@@ -204,7 +209,7 @@ function iniciaCaminho(){
 
 
  function metodoMod(type,value, modificador){
-    //quando um bloco se sobrepoem a um modificador, esta função faz as ações conforme o type e value definidos
+    //quando um bloco se sobrepoem a um modificador, esta função faz as ações conforme o type e value definidos no JSON
     if (type == "colorize"){
 
         modificador.visible = false;
@@ -247,7 +252,7 @@ function iniciaCaminho(){
  }
 
  function checaSobreposicaoMod(){
-    //checa se houve sobreposição entra um bloco e um modificador, caso house o metodo do modificador é excutado
+    //checa se houve sobreposição entra um bloco e um modificador, se sim, o metodo do modificador é excutado
     if(lvls.levels[levelAtual].modifiers.length == 1){
 
         if(sobrepos(bloco1,mod1)){
@@ -353,7 +358,7 @@ function iniciaCaminho(){
 
  function checaLevel(){
      //checa se o final do jogo foi atingido, caso tenha sido atingido mas o modificador era
-     //incorreto o level é reiniciado, se não, o jogo é terminado com saudações.
+     //incorreto o level é reiniciado, se não, o jogo é terminado e a tela final é mostrada.
     if(final == true && levelAtual == 5){
         
         
@@ -421,7 +426,7 @@ function animaTexto(name){
 }
 
 function ultimoLv(){
-        //gera tela final do jogo
+        //gera tela final do jogo e botao que reinicia o jogo caso desejo do usuario
         
         telaFim = new PIXI.Application();
         telaFim.renderer.autoResize = true;
