@@ -12,9 +12,8 @@ setup();
 //funcoes reponsaveis pelo loop do jogo
 function setup() {
     
-    checaFinal();
-    carregaLevelAtual(levelAtual);
-    state = play;
+    checaLevel();
+    
     tela.ticker.add(delta => gameLoop(delta));
     
   }
@@ -323,7 +322,7 @@ function iniciaCaminho(){
 
     }else if (modificadores[click] ==  "resize2"){
 
-        console.log('essa fera ai meu');
+        
         lvls.levels[levelAtual].modifiers[0].value = "2";
         lvls.levels[levelAtual].modifiers[0].type = "resize";
         var textura = new PIXI.Texture.fromImage(imgSpriteMod("resize","2"));
@@ -334,19 +333,25 @@ function iniciaCaminho(){
   
  }
 
- function checaFinal(){
+ function checaLevel(){
      //checa se o final do jogo foi atingido, caso tenha sido atingido mas o modificador era
      //incorreto o level é reiniciado, se não, o jogo é terminado com saudações.
     if(final == true && levelAtual == 5){
 
         console.log("parabens jogador, você venceu!");
-        window.stop();
+        
     }
-    if(final == false && levelAtual == 5){
+    else if(final == false && levelAtual == 5){
 
         console.log("ops, modificador incorreto, o level sera reiniciado");
         levelAtual --;
         lvls.levels[levelAtual].modifiers[0].type = "select";
+        state = play;
         setup();
+
+    }else{
+
+        carregaLevelAtual(levelAtual);
+        state = play;
     }
 }
