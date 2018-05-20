@@ -1,7 +1,7 @@
 var levelAtual = 0;
 var click = -1;
 var final = false;
-var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto;
+var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto, telaFim;
 
 
 
@@ -27,10 +27,17 @@ function gameLoop(delta){
 function play(delta) {
     
     checaSobreposicaoMod();
-    checaSobreposicaoBloco2();      
+    checaSobreposicaoBloco2();
+         
         
 }
 
+function fim(){
+
+    tela.visible = false;
+    
+    
+}
 
     
 
@@ -41,7 +48,7 @@ function carregaLevelAtual(levelAtual){
     geraTela();
     geraBlocos(levelAtual);
     criaMod(lvls.levels[levelAtual].modifiers.length);
-    
+    tutorial(levelAtual);
     
 }
 
@@ -340,9 +347,9 @@ function iniciaCaminho(){
      //checa se o final do jogo foi atingido, caso tenha sido atingido mas o modificador era
      //incorreto o level é reiniciado, se não, o jogo é terminado com saudações.
     if(final == true && levelAtual == 5){
-
-        console.log("parabens jogador, você venceu!");
-        
+       
+        ultimoLv();
+        state = fim;
     }
     else if(final == false && levelAtual == 5){
 
@@ -401,4 +408,72 @@ function animaTexto(name){
         TweenMax.to(texto, 3, {pixi:{skewX:15, skewY:15} , repeat:-1});
     }
 
+}
+
+function ultimoLv(){
+        //gera tela final do jogo
+        
+        telaFim = new PIXI.Application();
+        telaFim.renderer.autoResize = true;
+        telaFim.renderer.view.style.position = "absolute";
+        telaFim.renderer.view.style.display = "block";
+        telaFim.renderer.resize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(telaFim.view);
+        texto = new PIXI.Text("YOU WIN!",
+            {fontFamily : 'Arial', fontSize: 100, fill : 'white', align : 'center'});
+
+       texto.anchor.set(0.5);
+       texto.x = window.innerWidth/2;
+       texto.y = window.innerHeight/2;
+       var scaleMuday = (window.innerHeight) / texto.height;
+       var scaleMudax = (window.innerWidth) / texto.width;
+       texto.scale.x = texto.scale.x*scaleMudax;
+       texto.scale.y = texto.scale.y*scaleMuday;
+       telaFim.stage.addChild(texto);
+       TweenMax.to(texto, 3, {pixi: {scaleX: 0 ,
+       scaleY: 0}}); 
+       geraBotaoRealod();
+}
+
+function geraBotaoRealod(){
+    //Gera botao que da opcao para reinicio do jogo, zera variaveis e se clicado retorna a tela inicial
+       var botao = new PIXI.Text("CLIQUE NA TELA PARA JOGAR NOVAMENTE",
+            {fontFamily : 'Arial', fontSize: 70, fill : 'white', align : 'center'});
+            
+       levelAtual = 0;
+       lvls.levels[4].modifiers[0].type = "select";
+       state = play;
+       botao.anchor.set(0.5);
+       botao.x = window.innerWidth/2;
+       botao.y = window.innerHeight/2;
+       botao.hitArea = new PIXI.Rectangle(0,0,window.innerWidth,window.innerHeight);
+       botao.interactive = true;
+       botao.buttonMode = true;
+       botao.on('click',setup);
+       telaFim.stage.addChild(botao);
+}
+
+function tutorial(estagio){
+//funcao que gera tela com instrucoes para jogador
+console.log(estagio);
+if(estagio == 0){
+    var telaBlur = new PIXI.Application({transparent: true});
+    telaBlur.renderer.autoResize = true;
+    telaBlur.renderer.view.style.position = "absolute";
+    telaBlur.renderer.view.style.display = "block";
+    telaBlur.renderer.resize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(telaBlur.view);
+    
+    var blur = new PIXI.filters.BlurFilter();
+    var instruc = new PIXI.Text("CLIQUE NO BLOCO MAIS A ESQUERDA PARA INICIAR O JOGO",
+                    {fontFamily : 'Arial', fontSize: 32, fill : 'white', align : 'center'});
+
+    instruc.anchor.set(0.5);
+    instruc.x = window.innerWidth/2;
+    instruc.y = window.innerHeight/2;
+    blur.blur = 10;
+    tela.stage.filters = [blur];
+    
+    telaBlur.stage.addChild(instruc);
+}
 }
