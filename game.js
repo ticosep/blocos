@@ -1,7 +1,7 @@
 var levelAtual = 0;
 var click = -1;
 var final = false;
-var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho;
+var tela, trilho, bloco1, bloco2, mod1, mod2,resizer, caminho, texto;
 
 
 
@@ -59,6 +59,9 @@ function geraTela(){
     trilho.moveTo(0,window.innerHeight/2);
     trilho.lineTo(window.innerWidth,window.innerHeight/2);
     tela.stage.addChild(trilho);
+    //introduz texto que contem o lvl atual
+    geraMsg(lvls.levels[levelAtual].name);
+    
     
 }
 
@@ -354,4 +357,48 @@ function iniciaCaminho(){
         carregaLevelAtual(levelAtual);
         state = play;
     }
+}
+
+function geraMsg(msg){
+//gera msg do lvl que aparecera na tela
+    texto = new PIXI.Text(msg,
+                {fontFamily : 'Arial', fontSize: 50, fill : 'white', align : 'center'});
+
+    texto.anchor.set(0.5);
+    texto.x = window.innerWidth/2;
+    texto.y = 1 + texto.height;
+    tela.stage.addChild(texto);
+    animaTexto(msg);
+}
+
+function animaTexto(name){
+    // funcao responsavel por animar os textos passados, conforme o nome do level atual
+    var scaleMuday = (window.innerHeight/2) / texto.height;
+    var scaleMudax = (window.innerWidth/2) / texto.width;
+
+    if (name == "Growing"){
+        
+        TweenMax.to(texto.scale, 3, {x: texto.scale.x*scaleMudax ,
+                     y: texto.scale.y*scaleMuday, repeat:-1}); 
+        
+    }else if(name == "Let it blue"){
+       
+        TweenMax.to(texto, 1, {pixi:{tint: 0x0000ff} , repeat:-1}); 
+
+    }else if (name == "Mix and Match"){
+        texto.scale.x = texto.scale.x*scaleMudax;
+        texto.scale.y = texto.scale.y*scaleMuday;
+        TweenMax.to(texto, 3, {pixi:{tint: 0x0000ff, scaleX: 1
+                    , scaleY: 1} , repeat:-1});
+
+    }else if(name == "Pulsating"){
+        texto.scale.x = texto.scale.x*scaleMudax;
+        texto.scale.y = texto.scale.y*scaleMuday;
+        TweenMax.to(texto.scale, 3, {x: 1 ,
+            y: 1, repeat:-1}); 
+    }else{
+        texto.tint =  0xff0000;
+        TweenMax.to(texto, 3, {pixi:{skewX:15, skewY:15} , repeat:-1});
+    }
+
 }
